@@ -8,18 +8,33 @@
         <table>
           <tbody>
             <tr>
-              <th>width</th>
-              <td><input v-model="order.width" type="number" min="1" /></td>
+              <th>横</th>
+              <td>
+                <input
+                  v-model="order.width"
+                  type="number"
+                  min="1"
+                  class="order-width"
+                />px
+              </td>
             </tr>
             <tr>
-              <th>height</th>
-              <td><input v-model="order.height" type="number" min="1" /></td>
+              <th>縦</th>
+              <td>
+                <input
+                  v-model="order.height"
+                  type="number"
+                  min="1"
+                  class="order-height"
+                />px
+              </td>
             </tr>
           </tbody>
         </table>
       </div>
       <div>
-        <p>ここにポイッとしてね</p>
+        <p class="desc-msg">ここにポイッとしてね。<br />上書きするよ。</p>
+        <p class="desc-fmt">対応: jpeg, png, webp, gif, svg</p>
       </div>
     </main>
   </div>
@@ -35,7 +50,7 @@ export default {
   data() {
     return {
       order: {
-        width: 200,
+        width: null,
         height: null
       }
     };
@@ -80,6 +95,20 @@ export default {
 
 body {
   padding: 15px;
+}
+
+.order-width,
+.order-height {
+  width: 80px;
+  font-size: 16px;
+  margin: 0 0.5em;
+}
+
+.desc-msg {
+  font-size: 0.8em;
+}
+.desc-fmt {
+  font-size: 0.7em;
 }
 
 .custom-content {
