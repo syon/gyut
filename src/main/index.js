@@ -7,7 +7,7 @@ import sharp from "sharp";
 
 ipcMain.on("gyut-sharp-order", (event, arg) => {
   const { file, params } = arg;
-  console.log(arg);
+  // console.log(arg);
   fs.readFile(file.path, (err, data) => {
     if (err) throw err;
     sharp(data)

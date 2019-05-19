@@ -1,6 +1,8 @@
 <template>
   <div id="wrapper">
-    <VueFullScreenFileDrop @drop="onDrop" />
+    <VueFullScreenFileDrop @drop="onDrop">
+      <div class="custom-content"></div>
+    </VueFullScreenFileDrop>
     <main>
       <div class="doc">
         <table>
@@ -26,7 +28,6 @@
 <script>
 import { ipcRenderer } from "electron";
 import VueFullScreenFileDrop from "vue-full-screen-file-drop";
-import "vue-full-screen-file-drop/dist/vue-full-screen-file-drop.css";
 
 export default {
   name: "LandingPage",
@@ -41,8 +42,8 @@ export default {
   },
   mounted() {
     ipcRenderer.on("gyut-sharp-reply", (event, arg) => {
-      const { info } = arg;
-      console.log(info);
+      // const { info } = arg;
+      // console.log(info);
     });
   },
   methods: {
@@ -70,7 +71,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 * {
   box-sizing: border-box;
   margin: 0;
@@ -79,5 +80,24 @@ export default {
 
 body {
   padding: 15px;
+}
+
+.custom-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.1);
+  font-size: 1em;
+}
+.custom-content:before {
+  border: 2px dashed #fff;
+  position: absolute;
+  content: "";
+  top: 10px;
+  bottom: 10px;
+  left: 10px;
+  right: 10px;
 }
 </style>
