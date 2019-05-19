@@ -1,5 +1,6 @@
 <template>
   <div id="wrapper">
+    <VueFullScreenFileDrop @drop="onDrop" />
     <img id="logo" src="~@/assets/logo.png" alt="electron-vue" />
     <main>
       <div class="left-side">
@@ -17,9 +18,7 @@
             everything from internal configurations, using the project
             structure, building your application, and so much more.
           </p>
-          <button @click="runIt">
-            Run</button
-          ><br /><br />
+          <button>Run</button><br /><br />
         </div>
         <div class="doc">
           <div class="title alt">Other Documentation</div>
@@ -38,23 +37,34 @@
 <script>
 import SystemInformation from "./LandingPage/SystemInformation";
 import { ipcRenderer } from "electron";
+import VueFullScreenFileDrop from "vue-full-screen-file-drop";
+import "vue-full-screen-file-drop/dist/vue-full-screen-file-drop.css";
 
 export default {
   name: "LandingPage",
-  components: { SystemInformation },
+  components: { SystemInformation, VueFullScreenFileDrop },
+  mounted() {
+    ipcRenderer.on("gyut-sharp-reply", (event, arg) => {
+      const { info } = arg;
+      console.log(info);
+    });
+  },
   methods: {
     open(link) {
       this.$electron.shell.openExternal(link);
     },
-    runIt() {
-      const file = {
-        name: "",
-        path: "/Users/syon/Downloads/dino-reichmuth-93777-unsplash.jpg",
-        size: "",
-        type: "",
-        lastModified: ""
-      };
-      ipcRenderer.send("gyut-sharp", { file });
+    onDrop(formData, files) {
+      Object.keys(files).forEach(x => {
+        const file = files[x];
+        const obj = {
+          name: file.name,
+          path: file.path,
+          size: file.size,
+          type: file.type,
+          lastModified: file.lastModified
+        };
+        ipcRenderer.send("gyut-sharp-order", { file: obj });
+      });
     }
   }
 };

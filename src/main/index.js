@@ -5,16 +5,18 @@ import { app, ipcMain, BrowserWindow } from "electron";
 import fs from "fs";
 import sharp from "sharp";
 
-ipcMain.on("gyut-sharp", (event, arg) => {
+ipcMain.on("gyut-sharp-order", (event, arg) => {
   const { file } = arg;
-  console.log("こちらメインプロセス。ご注文うけたまわり〜", arg);
-  const buf = fs.readFileSync(file.path);
-  sharp(buf)
-    .resize(320, 240)
-    .toFile("___.png", (err, info) => {
-      if (err) throw new Error(err);
-      event.sender.send("reply", { info });
-    });
+  console.log(arg);
+  fs.readFile(file.path, (err, data) => {
+    if (err) throw err;
+    sharp(data)
+      .resize(320, 240)
+      .toFile(file.path, (err, info) => {
+        if (err) throw new Error(err);
+        event.sender.send("gyut-sharp-reply", { info });
+      });
+  });
 });
 
 /**
