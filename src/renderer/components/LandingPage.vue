@@ -22,12 +22,8 @@
         </div>
         <div class="doc">
           <div class="title alt">Other Documentation</div>
-          <button class="alt" @click="open('https://electron.atom.io/docs/')">
-            Electron
-          </button>
-          <button class="alt" @click="open('https://vuejs.org/v2/guide/')">
-            Vue.js
-          </button>
+          <input v-model="order.width" type="text" />
+          <input v-model="order.height" type="text" />
         </div>
       </div>
     </main>
@@ -43,6 +39,14 @@ import "vue-full-screen-file-drop/dist/vue-full-screen-file-drop.css";
 export default {
   name: "LandingPage",
   components: { SystemInformation, VueFullScreenFileDrop },
+  data() {
+    return {
+      order: {
+        width: 200,
+        height: null
+      }
+    };
+  },
   mounted() {
     ipcRenderer.on("gyut-sharp-reply", (event, arg) => {
       const { info } = arg;
@@ -63,7 +67,11 @@ export default {
           type: file.type,
           lastModified: file.lastModified
         };
-        ipcRenderer.send("gyut-sharp-order", { file: obj });
+        const params = {
+          width: Number(this.order.width) || null,
+          height: Number(this.order.height) || null
+        };
+        ipcRenderer.send("gyut-sharp-order", { file: obj, params });
       });
     }
   }

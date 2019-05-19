@@ -6,12 +6,12 @@ import fs from "fs";
 import sharp from "sharp";
 
 ipcMain.on("gyut-sharp-order", (event, arg) => {
-  const { file } = arg;
+  const { file, params } = arg;
   console.log(arg);
   fs.readFile(file.path, (err, data) => {
     if (err) throw err;
     sharp(data)
-      .resize(320, 240)
+      .resize(params.width, params.height)
       .toFile(file.path, (err, info) => {
         if (err) throw new Error(err);
         event.sender.send("gyut-sharp-reply", { info });
