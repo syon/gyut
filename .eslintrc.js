@@ -1,14 +1,14 @@
 module.exports = {
   root: true,
-  parser: 'babel-eslint',
   parserOptions: {
-    sourceType: 'module'
+    sourceType: 'module',
+    parser: 'babel-eslint'
   },
   env: {
     browser: true,
     node: true
   },
-  extends: 'standard',
+  extends: ['standard', 'eslint:recommended', 'plugin:vue/recommended', 'plugin:prettier/recommended'],
   globals: {
     __static: true
   },
@@ -21,6 +21,13 @@ module.exports = {
     // allow async-await
     'generator-star-spacing': 0,
     // allow debugger during development
-    'no-debugger': process.env.NODE_ENV === 'production' ? 2 : 0
+    'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'off',
+    'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
+    'no-undef': 'error',
+    'vue/max-attributes-per-line': 'off',
+    'vue/html-self-closing': 'off', // for Prettier
+    'vue/singleline-html-element-content-newline': 'off',
+    'vue/html-closing-bracket-newline': 'off',
+    'vue/multiline-html-element-content-newline': 'off'
   }
 }
