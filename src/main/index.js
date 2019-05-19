@@ -2,6 +2,17 @@
 
 import { app, BrowserWindow } from "electron";
 
+import fs from "fs";
+import sharp from "sharp";
+
+const buf = fs.readFileSync("./build/icons/256x256.png");
+sharp(buf)
+  .resize(320, 240)
+  .toFile("___.png", (err, info) => {
+    if (err) throw new Error(err);
+    console.log(info);
+  });
+
 /**
  * Set `__static` path to static files in production
  * https://simulatedgreg.gitbooks.io/electron-vue/content/en/using-static-assets.html
