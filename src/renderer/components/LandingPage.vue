@@ -17,12 +17,8 @@
             everything from internal configurations, using the project
             structure, building your application, and so much more.
           </p>
-          <button
-            @click="
-              open('https://simulatedgreg.gitbooks.io/electron-vue/content/')
-            "
-          >
-            Read the Docs</button
+          <button @click="runIt">
+            Run</button
           ><br /><br />
         </div>
         <div class="doc">
@@ -41,6 +37,7 @@
 
 <script>
 import SystemInformation from "./LandingPage/SystemInformation";
+import { ipcRenderer } from "electron";
 
 export default {
   name: "LandingPage",
@@ -48,6 +45,16 @@ export default {
   methods: {
     open(link) {
       this.$electron.shell.openExternal(link);
+    },
+    runIt() {
+      const file = {
+        name: "",
+        path: "/Users/syon/Downloads/dino-reichmuth-93777-unsplash.jpg",
+        size: "",
+        type: "",
+        lastModified: ""
+      };
+      ipcRenderer.send("gyut-sharp", { file });
     }
   }
 };

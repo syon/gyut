@@ -1,17 +1,21 @@
 "use strict";
 
-import { app, BrowserWindow } from "electron";
+import { app, ipcMain, BrowserWindow } from "electron";
 
 import fs from "fs";
 import sharp from "sharp";
 
-const buf = fs.readFileSync("./build/icons/256x256.png");
-sharp(buf)
-  .resize(320, 240)
-  .toFile("___.png", (err, info) => {
-    if (err) throw new Error(err);
-    console.log(info);
-  });
+ipcMain.on("gyut-sharp", (event, arg) => {
+  const { file } = arg;
+  console.log("こちらメインプロセス。ご注文うけたまわり〜", arg);
+  const buf = fs.readFileSync(file.path);
+  sharp(buf)
+    .resize(320, 240)
+    .toFile("___.png", (err, info) => {
+      if (err) throw new Error(err);
+      event.sender.send("reply", { info });
+    });
+});
 
 /**
  * Set `__static` path to static files in production
